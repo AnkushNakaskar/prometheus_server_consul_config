@@ -1,0 +1,101 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'catalog-right-consul'
+    metrics_path: '/api/rightService/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-right-service']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-catalog-consul'
+    metrics_path: '/api/catalog-service/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-catalog']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-clip-consul'
+    metrics_path: '/api/clipService/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-clip']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-context-consul'
+    metrics_path: '/api/contextService/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-context']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-cp-consul'
+    metrics_path: '/api/cp/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-cp']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-product-consul'
+    metrics_path: '/api/product/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-product']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+  - job_name: 'content-referencedata-consul'
+    metrics_path: '/api/referencedata/actuator/prometheus'
+    consul_sd_configs:
+      - server: '<consul_server_ip>:8500'
+        services: ['content-referencedata']
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: job    
+      - source_labels: ['__meta_consul_address']
+        target_label:  '__address__'
+        regex: (.*);.*:(\d+)
+        replacement: $1:$2
+        action: 'replace'
+      
